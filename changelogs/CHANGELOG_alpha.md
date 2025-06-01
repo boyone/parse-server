@@ -1,3 +1,17 @@
+## [8.2.1-alpha.2](https://github.com/parse-community/parse-server/compare/8.2.1-alpha.1...8.2.1-alpha.2) (2025-05-14)
+
+
+### Performance Improvements
+
+* Remove saving Parse Cloud Job request parameters in internal collection `_JobStatus` ([#8343](https://github.com/parse-community/parse-server/issues/8343)) ([e98733c](https://github.com/parse-community/parse-server/commit/e98733cbac9451521a3acc388d2f9d29eb4610e0))
+
+## [8.2.1-alpha.1](https://github.com/parse-community/parse-server/compare/8.2.0...8.2.1-alpha.1) (2025-05-03)
+
+
+### Bug Fixes
+
+* `Parse.Query.containedIn` and `matchesQuery` do not work with nested objects ([#9738](https://github.com/parse-community/parse-server/issues/9738)) ([0db3a6f](https://github.com/parse-community/parse-server/commit/0db3a6ff27a129427770e314a792cc586e4255b5))
+
 # [8.2.0-alpha.1](https://github.com/parse-community/parse-server/compare/8.1.1-alpha.1...8.2.0-alpha.1) (2025-04-15)
 
 
