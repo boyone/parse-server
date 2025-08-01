@@ -1,3 +1,10 @@
+## [8.2.3-alpha.1](https://github.com/parse-community/parse-server/compare/8.2.2...8.2.3-alpha.1) (2025-07-13)
+
+
+### Bug Fixes
+
+* MongoDB aggregation pipeline with `$dateSubtract` from `$$NOW` returns no results ([#9822](https://github.com/parse-community/parse-server/issues/9822)) ([847a274](https://github.com/parse-community/parse-server/commit/847a274cdb8c22f8e0fc249162e5e2c9e29a594a))
+
 ## [8.2.2-alpha.1](https://github.com/parse-community/parse-server/compare/8.2.1...8.2.2-alpha.1) (2025-07-10)
 
 
