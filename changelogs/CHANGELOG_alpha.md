@@ -1,3 +1,10 @@
+# [8.3.0-alpha.2](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.1...8.3.0-alpha.2) (2025-10-03)
+
+
+### Features
+
+* Add regex option `u` for unicode support in `Parse.Query.matches` for MongoDB ([#9867](https://github.com/parse-community/parse-server/issues/9867)) ([7cb962a](https://github.com/parse-community/parse-server/commit/7cb962a02845f3dded61baffd84515f94b66ee50))
+
 # [8.3.0-alpha.1](https://github.com/parse-community/parse-server/compare/8.2.5...8.3.0-alpha.1) (2025-10-03)
 
 
