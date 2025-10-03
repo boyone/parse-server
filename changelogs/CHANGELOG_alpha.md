@@ -1,3 +1,10 @@
+# [8.3.0-alpha.1](https://github.com/parse-community/parse-server/compare/8.2.5...8.3.0-alpha.1) (2025-10-03)
+
+
+### Features
+
+* Add option `keepUnknownIndexes` to retain indexes which are not specified in schema ([#9857](https://github.com/parse-community/parse-server/issues/9857)) ([89fad46](https://github.com/parse-community/parse-server/commit/89fad468c3a43772879c06c4d939a83b72517a8e))
+
 ## [8.2.5-alpha.1](https://github.com/parse-community/parse-server/compare/8.2.4...8.2.5-alpha.1) (2025-09-21)
 
 
