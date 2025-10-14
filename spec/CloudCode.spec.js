@@ -11,8 +11,8 @@ const mockAdapter = {
     name: filename,
     location: `http://www.somewhere.com/${filename}`,
   }),
-  deleteFile: () => {},
-  getFileData: () => {},
+  deleteFile: () => { },
+  getFileData: () => { },
   getFileLocation: (config, filename) => `http://www.somewhere.com/${filename}`,
   validateFilename: () => {
     return null;
@@ -49,7 +49,7 @@ describe('Cloud Code', () => {
   });
 
   it('cloud code must be valid type', async () => {
-    spyOn(console, 'error').and.callFake(() => {});
+    spyOn(console, 'error').and.callFake(() => { });
     await expectAsync(reconfigureServer({ cloud: true })).toBeRejectedWith(
       "argument 'cloud' must either be a string or a function"
     );
@@ -114,7 +114,7 @@ describe('Cloud Code', () => {
 
   it('show warning on duplicate cloud functions', done => {
     const logger = require('../lib/logger').logger;
-    spyOn(logger, 'warn').and.callFake(() => {});
+    spyOn(logger, 'warn').and.callFake(() => { });
     Parse.Cloud.define('hello', () => {
       return 'Hello world!';
     });
@@ -1672,7 +1672,7 @@ describe('Cloud Code', () => {
   });
 
   it('trivial beforeSave should not affect fetched pointers (regression test for #1238)', done => {
-    Parse.Cloud.beforeSave('BeforeSaveUnchanged', () => {});
+    Parse.Cloud.beforeSave('BeforeSaveUnchanged', () => { });
 
     const TestObject = Parse.Object.extend('TestObject');
     const NoBeforeSaveObject = Parse.Object.extend('NoBeforeSave');
@@ -1745,7 +1745,7 @@ describe('Cloud Code', () => {
   });
 
   it('beforeSave should not affect fetched pointers', done => {
-    Parse.Cloud.beforeSave('BeforeSaveUnchanged', () => {});
+    Parse.Cloud.beforeSave('BeforeSaveUnchanged', () => { });
 
     Parse.Cloud.beforeSave('BeforeSaveChanged', function (req) {
       req.object.set('foo', 'baz');
@@ -2059,7 +2059,7 @@ describe('Cloud Code', () => {
   });
 
   it('pointer should not be cleared by triggers', async () => {
-    Parse.Cloud.afterSave('MyObject', () => {});
+    Parse.Cloud.afterSave('MyObject', () => { });
     const foo = await new Parse.Object('Test', { foo: 'bar' }).save();
     const obj = await new Parse.Object('MyObject', { foo }).save();
     const foo2 = obj.get('foo');
@@ -2067,7 +2067,7 @@ describe('Cloud Code', () => {
   });
 
   it('can set a pointer in triggers', async () => {
-    Parse.Cloud.beforeSave('MyObject', () => {});
+    Parse.Cloud.beforeSave('MyObject', () => { });
     Parse.Cloud.afterSave(
       'MyObject',
       async ({ object }) => {
@@ -2168,7 +2168,7 @@ describe('Cloud Code', () => {
 
     it('should not run without master key', done => {
       expect(() => {
-        Parse.Cloud.job('myJob', () => {});
+        Parse.Cloud.job('myJob', () => { });
       }).not.toThrow();
 
       request({
@@ -2354,6 +2354,14 @@ describe('cloud functions', () => {
 
     Parse.Cloud.run('myFunction', {}).then(() => done());
   });
+
+  it('should have request config', async () => {
+    Parse.Cloud.define('myConfigFunction', req => {
+      expect(req.config).toBeDefined();
+      return 'success';
+    });
+    await Parse.Cloud.run('myConfigFunction', {});
+  });
 });
 
 describe('beforeSave hooks', () => {
@@ -2375,6 +2383,16 @@ describe('beforeSave hooks', () => {
     const MyObject = Parse.Object.extend('MyObject');
     const myObject = new MyObject();
     myObject.save().then(() => done());
+  });
+
+  it('should have request config', async () => {
+    Parse.Cloud.beforeSave('MyObject', req => {
+      expect(req.config).toBeDefined();
+    });
+
+    const MyObject = Parse.Object.extend('MyObject');
+    const myObject = new MyObject();
+    await myObject.save();
   });
 
   it('should respect custom object ids (#6733)', async () => {
@@ -2430,6 +2448,16 @@ describe('afterSave hooks', () => {
     const MyObject = Parse.Object.extend('MyObject');
     const myObject = new MyObject();
     myObject.save().then(() => done());
+  });
+
+  it('should have request config', async () => {
+    Parse.Cloud.afterSave('MyObject', req => {
+      expect(req.config).toBeDefined();
+    });
+
+    const MyObject = Parse.Object.extend('MyObject');
+    const myObject = new MyObject();
+    await myObject.save();
   });
 
   it('should unset in afterSave', async () => {
@@ -2489,6 +2517,17 @@ describe('beforeDelete hooks', () => {
       .then(myObj => myObj.destroy())
       .then(() => done());
   });
+
+  it('should have request config', async () => {
+    Parse.Cloud.beforeDelete('MyObject', req => {
+      expect(req.config).toBeDefined();
+    });
+
+    const MyObject = Parse.Object.extend('MyObject');
+    const myObject = new MyObject();
+    await myObject.save();
+    await myObject.destroy();
+  });
 });
 
 describe('afterDelete hooks', () => {
@@ -2516,6 +2555,17 @@ describe('afterDelete hooks', () => {
       .save()
       .then(myObj => myObj.destroy())
       .then(() => done());
+  });
+
+  it('should have request config', async () => {
+    Parse.Cloud.afterDelete('MyObject', req => {
+      expect(req.config).toBeDefined();
+    });
+
+    const MyObject = Parse.Object.extend('MyObject');
+    const myObject = new MyObject();
+    await myObject.save();
+    await myObject.destroy();
   });
 });
 
@@ -2824,6 +2874,18 @@ describe('beforeFind hooks', () => {
       .then(() => done());
   });
 
+  it('should have request config', async () => {
+    Parse.Cloud.beforeFind('MyObject', req => {
+      expect(req.config).toBeDefined();
+    });
+
+    const MyObject = Parse.Object.extend('MyObject');
+    const myObject = new MyObject();
+    await myObject.save();
+    const query = new Parse.Query('MyObject');
+    query.equalTo('objectId', myObject.id);
+    await Promise.all([query.get(myObject.id), query.first(), query.find()]);
+  })
   it('should run beforeFind on pointers and array of pointers from an object', async () => {
     const obj1 = new Parse.Object('TestObject');
     const obj2 = new Parse.Object('TestObject2');
@@ -3208,54 +3270,67 @@ describe('afterFind hooks', () => {
       .catch(done.fail);
   });
 
+  it('should have request config', async () => {
+    Parse.Cloud.afterFind('MyObject', req => {
+      expect(req.config).toBeDefined();
+    });
+
+    const MyObject = Parse.Object.extend('MyObject');
+    const myObject = new MyObject();
+    await myObject.save();
+    const query = new Parse.Query('MyObject');
+    query.equalTo('objectId', myObject.id);
+    await Promise.all([query.get(myObject.id), query.first(), query.find()]);
+  });
+
   it('should validate triggers correctly', () => {
     expect(() => {
-      Parse.Cloud.beforeSave('_Session', () => {});
+      Parse.Cloud.beforeSave('_Session', () => { });
     }).toThrow('Only the afterLogout trigger is allowed for the _Session class.');
     expect(() => {
-      Parse.Cloud.afterSave('_Session', () => {});
+      Parse.Cloud.afterSave('_Session', () => { });
     }).toThrow('Only the afterLogout trigger is allowed for the _Session class.');
     expect(() => {
-      Parse.Cloud.beforeSave('_PushStatus', () => {});
+      Parse.Cloud.beforeSave('_PushStatus', () => { });
     }).toThrow('Only afterSave is allowed on _PushStatus');
     expect(() => {
-      Parse.Cloud.afterSave('_PushStatus', () => {});
+      Parse.Cloud.afterSave('_PushStatus', () => { });
     }).not.toThrow();
     expect(() => {
-      Parse.Cloud.beforeLogin(() => {});
+      Parse.Cloud.beforeLogin(() => { });
     }).not.toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.beforeLogin('_User', () => {});
+      Parse.Cloud.beforeLogin('_User', () => { });
     }).not.toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.beforeLogin(Parse.User, () => {});
+      Parse.Cloud.beforeLogin(Parse.User, () => { });
     }).not.toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.beforeLogin('SomeClass', () => {});
+      Parse.Cloud.beforeLogin('SomeClass', () => { });
     }).toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.afterLogin(() => {});
+      Parse.Cloud.afterLogin(() => { });
     }).not.toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.afterLogin('_User', () => {});
+      Parse.Cloud.afterLogin('_User', () => { });
     }).not.toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.afterLogin(Parse.User, () => {});
+      Parse.Cloud.afterLogin(Parse.User, () => { });
     }).not.toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.afterLogin('SomeClass', () => {});
+      Parse.Cloud.afterLogin('SomeClass', () => { });
     }).toThrow('Only the _User class is allowed for the beforeLogin and afterLogin triggers');
     expect(() => {
-      Parse.Cloud.afterLogout(() => {});
+      Parse.Cloud.afterLogout(() => { });
     }).not.toThrow();
     expect(() => {
-      Parse.Cloud.afterLogout('_Session', () => {});
+      Parse.Cloud.afterLogout('_Session', () => { });
     }).not.toThrow();
     expect(() => {
-      Parse.Cloud.afterLogout('_User', () => {});
+      Parse.Cloud.afterLogout('_User', () => { });
     }).toThrow('Only the _Session class is allowed for the afterLogout trigger.');
     expect(() => {
-      Parse.Cloud.afterLogout('SomeClass', () => {});
+      Parse.Cloud.afterLogout('SomeClass', () => { });
     }).toThrow('Only the _Session class is allowed for the afterLogout trigger.');
   });
 
@@ -3695,6 +3770,7 @@ describe('beforeLogin hook', () => {
       expect(req.ip).toBeDefined();
       expect(req.installationId).toBeDefined();
       expect(req.context).toBeDefined();
+      expect(req.config).toBeDefined();
     });
 
     await Parse.User.signUp('tupac', 'shakur');
@@ -3812,6 +3888,7 @@ describe('afterLogin hook', () => {
       expect(req.ip).toBeDefined();
       expect(req.installationId).toBeDefined();
       expect(req.context).toBeDefined();
+      expect(req.config).toBeDefined();
     });
 
     await Parse.User.signUp('testuser', 'p@ssword');
@@ -4012,6 +4089,15 @@ describe('saveFile hooks', () => {
     } catch (error) {
       expect(error.message).toBe('some-error-message');
     }
+  });
+
+  it('beforeSaveFile should have config', async () => {
+    await reconfigureServer({ filesAdapter: mockAdapter });
+    Parse.Cloud.beforeSave(Parse.File, req => {
+      expect(req.config).toBeDefined();
+    });
+    const file = new Parse.File('popeye.txt', [1, 2, 3], 'text/plain');
+    await file.save({ useMasterKey: true });
   });
 
   it('beforeSave(Parse.File)  should change values of uploaded file by editing fileObject directly', async () => {
@@ -4316,7 +4402,7 @@ describe('Parse.File hooks', () => {
       beforeFind() {
         throw 'unauthorized';
       },
-      afterFind() {},
+      afterFind() { },
     };
     for (const hook in hooks) {
       spyOn(hooks, hook).and.callThrough();
@@ -4344,7 +4430,7 @@ describe('Parse.File hooks', () => {
     await file.save({ useMasterKey: true });
     const user = await Parse.User.signUp('username', 'password');
     const hooks = {
-      beforeFind() {},
+      beforeFind() { },
       afterFind() {
         throw 'unauthorized';
       },
@@ -4563,7 +4649,7 @@ describe('sendEmail', () => {
 
   it('cannot send email without adapter', async () => {
     const logger = require('../lib/logger').logger;
-    spyOn(logger, 'error').and.callFake(() => {});
+    spyOn(logger, 'error').and.callFake(() => { });
     await Parse.Cloud.sendEmail({});
     expect(logger.error).toHaveBeenCalledWith(
       'Failed to send email because no mail adapter is configured for Parse Server.'
