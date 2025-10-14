@@ -1,3 +1,10 @@
+# [8.3.0-alpha.6](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.5...8.3.0-alpha.6) (2025-10-14)
+
+
+### Features
+
+* Add request context middleware for config and dependency injection in hooks ([#8480](https://github.com/parse-community/parse-server/issues/8480)) ([64f104e](https://github.com/parse-community/parse-server/commit/64f104e5c5f8863098e801eee632c14fcbd9b6f9))
+
 # [8.3.0-alpha.5](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.4...8.3.0-alpha.5) (2025-10-14)
 
 
