@@ -1,3 +1,10 @@
+# [8.3.0-alpha.7](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.6...8.3.0-alpha.7) (2025-10-15)
+
+
+### Bug Fixes
+
+* Security upgrade to parse 7.0.1 ([#9877](https://github.com/parse-community/parse-server/issues/9877)) ([abfa94c](https://github.com/parse-community/parse-server/commit/abfa94cd6de2c4e76337931c8ea8311c4ccf2a1a))
+
 # [8.3.0-alpha.6](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.5...8.3.0-alpha.6) (2025-10-14)
 
 
