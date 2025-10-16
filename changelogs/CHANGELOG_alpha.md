@@ -1,3 +1,10 @@
+# [8.3.0-alpha.8](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.7...8.3.0-alpha.8) (2025-10-16)
+
+
+### Bug Fixes
+
+* Warning logged when setting option `databaseOptions.disableIndexFieldValidation` ([#9880](https://github.com/parse-community/parse-server/issues/9880)) ([1815b01](https://github.com/parse-community/parse-server/commit/1815b019b52565d2bc87be2596a49aea7600aeba))
+
 # [8.3.0-alpha.7](https://github.com/parse-community/parse-server/compare/8.3.0-alpha.6...8.3.0-alpha.7) (2025-10-15)
 
 
